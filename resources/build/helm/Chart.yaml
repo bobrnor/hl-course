@@ -1,0 +1,4 @@
+name: hl-course
+description: Deploy a hl-course app
+version: 0.1.0
+appVersion: 0.1
