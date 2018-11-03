@@ -1,5 +1,0 @@
-image:
-  repository: bobrnor/hl-course
-  pullPolicy: Always
-
-restartPolicy: Never
