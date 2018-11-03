@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hl-course-server-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: hl.course.local
+    http:
+      paths:
+      - backend:
+          serviceName: hl-course-server-service
+          servicePort: 80
+        path: /hl-course

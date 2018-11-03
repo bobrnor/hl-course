@@ -2,4 +2,4 @@
 
 cd "${0%/*}"
 
-helm install ../helm/
+helm upgrade --install hl-course-server-release --namespace hl-course-ns ../helm/
