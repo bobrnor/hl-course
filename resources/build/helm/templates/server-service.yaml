@@ -4,7 +4,7 @@ metadata:
   name: hl-course-server-service
 spec:
   selector:
-    app: hl-course-server
+    run: hl-course-server
   ports:
   - protocol: TCP
     port: 80

@@ -14,8 +14,6 @@ type Storage struct {
 }
 
 func (s *Storage) Create(u registration.User) error {
-	return errors.New("test error")
-
 	s.m.Lock()
 	defer s.m.Unlock()
 

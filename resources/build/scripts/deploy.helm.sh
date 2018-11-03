@@ -2,4 +2,5 @@
 
 cd "${0%/*}"
 
-helm upgrade --install hl-course-server-release --namespace hl-course-ns ../helm/
+source .version
+helm upgrade --install hl-course-server-release --namespace hl-course-ns --set "app.version=${VERSION}" ../helm/

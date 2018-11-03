@@ -1,4 +1,4 @@
-FROM arm64v8/alpine
+FROM arm32v6/alpine
 
 COPY .bin/ /app/
 

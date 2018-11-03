@@ -13,7 +13,9 @@ import (
 func Handler(r registration.Service) http.Handler {
 	router := httprouter.New()
 
+	router.GET("/healthz", liveness())
 	router.POST("/user", registerUser(r))
+
 	return router
 }
 
@@ -32,5 +34,12 @@ func registerUser(s registration.Service) httprouter.Handle {
 
 		payload.Data = u
 		payload.Write(w, http.StatusOK)
+	}
+}
+
+func liveness() httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		w.Header().Set("X-Healthz-Header", "Awesome")
+		w.WriteHeader(http.StatusOK)
 	}
 }

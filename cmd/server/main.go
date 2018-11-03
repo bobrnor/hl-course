@@ -22,7 +22,7 @@ func run() error {
 	registrator := registration.NewService(storage)
 	router := rest.Handler(registrator)
 
-	log.Println("The hl-course server is on tap now: http://localhost:8080")
+	log.Println("The hl-course server is on tap now: http://0.0.0.0:8080")
 
-	return http.ListenAndServe(":8080", router)
+	return http.ListenAndServe("0.0.0.0:8080", router)
 }
