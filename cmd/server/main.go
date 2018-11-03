@@ -2,9 +2,12 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
-	"github.com/pkg/errors"
+	"github.com/bobrnor/hl-course/pkg/http/rest"
+	"github.com/bobrnor/hl-course/pkg/registration"
+	"github.com/bobrnor/hl-course/pkg/storage/memory"
 )
 
 func main() {
@@ -15,5 +18,11 @@ func main() {
 }
 
 func run() error {
-	return errors.New("nothing is implemented yet")
+	storage := new(memory.Storage)
+	registrator := registration.NewService(storage)
+	router := rest.Handler(registrator)
+
+	log.Println("The hl-course server is on tap now: http://localhost:8080")
+
+	return http.ListenAndServe(":8080", router)
 }
