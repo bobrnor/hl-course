@@ -16,7 +16,7 @@ type Service interface {
 }
 
 type Repository interface {
-	Create(u User) (id int, err error)
+	CreateUser(u User) (id int, err error)
 	CreateProfile(userID int) error
 }
 
@@ -36,7 +36,7 @@ func (s *service) RegisterUser() (User, error) {
 		Token: token,
 	}
 
-	id, err := s.repo.Create(user)
+	id, err := s.repo.CreateUser(user)
 	if err != nil {
 		return User{}, err
 	}

@@ -4,6 +4,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/bobrnor/hl-course/pkg/editing"
+
 	"github.com/pkg/errors"
 
 	"github.com/bobrnor/hl-course/pkg/registration"
@@ -15,7 +17,7 @@ type Storage struct {
 	profiles []Profile
 }
 
-func (s *Storage) Create(u registration.User) (id int, err error) {
+func (s *Storage) CreateUser(u registration.User) (id int, err error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 
@@ -41,6 +43,7 @@ func (s *Storage) CreateProfile(userID int) error {
 	}
 
 	profile := Profile{
+		ID:        len(s.profiles) + 1,
 		UserID:    userID,
 		FirstName: "",
 		LastName:  "",
@@ -50,6 +53,34 @@ func (s *Storage) CreateProfile(userID int) error {
 	s.profiles = append(s.profiles, profile)
 
 	return nil
+}
+
+func (s *Storage) UpdateProfile(userID int, p editing.Profile) error {
+	s.m.Lock()
+	defer s.m.Unlock()
+
+	profile := s.findProfile(userID)
+	if profile == nil {
+		return errors.WithStack(editing.ErrProfileNotFound)
+	}
+
+	if p.FirstName != nil {
+		profile.FirstName = *p.FirstName
+	}
+
+	if p.LastName != nil {
+		profile.LastName = *p.LastName
+	}
+
+	if p.BirthDate != nil {
+		profile.BirthDate = *p.BirthDate
+	}
+
+	if p.Status != nil {
+		profile.Status = *p.Status
+	}
+
+	return s.replaceProfile(*profile)
 }
 
 func (s *Storage) findUser(token string) *User {
@@ -68,4 +99,12 @@ func (s *Storage) findProfile(userID int) *Profile {
 		}
 	}
 	return nil
+}
+
+func (s *Storage) replaceProfile(p Profile) error {
+	if p.ID <= 0 || p.ID >= len(s.profiles) {
+		return errors.Errorf("profile id (%d) is out of range [0..%d]", p.ID, len(s.profiles))
+	}
+
+	s.profiles[p.ID-1] = p
 }
