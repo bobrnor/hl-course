@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/bobrnor/hl-course/pkg/authenticating"
+	"github.com/bobrnor/hl-course/pkg/editing"
+
 	"github.com/bobrnor/hl-course/pkg/http/rest"
 	"github.com/bobrnor/hl-course/pkg/registration"
 	"github.com/bobrnor/hl-course/pkg/storage/memory"
@@ -19,8 +22,12 @@ func main() {
 
 func run() error {
 	storage := new(memory.Storage)
+
 	registrator := registration.NewService(storage)
-	router := rest.Handler(registrator)
+	editor := editing.NewService(storage)
+	authenticator := authenticating.NewService(storage)
+
+	router := rest.Handler(registrator, editor, authenticator)
 
 	log.Println("The hl-course server is on tap now: http://0.0.0.0:8080")
 
