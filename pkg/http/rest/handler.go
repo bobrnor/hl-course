@@ -87,13 +87,6 @@ func authMiddleware(next httprouter.Handle, a authenticating.Service) httprouter
 		var payload Payload
 
 		token := p.ByName("token")
-		if len(token) == 0 {
-			log.Println("token not found")
-
-			payload.Error = fmt.Sprint("token not found")
-			payload.Write(w, http.StatusBadRequest)
-			return
-		}
 
 		id, err := a.Authenticate(token)
 		if err != nil {

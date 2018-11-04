@@ -1,10 +1,24 @@
 package editing
 
-import "time"
+import (
+	"time"
+
+	validation "github.com/go-ozzo/ozzo-validation"
+)
 
 type Profile struct {
-	FirstName *string    `json:"first_name,omitempty",validate:"min=1,max=80"`
-	LastName  *string    `json:"last_name,omitempty",validate:"min=1,max=80"`
-	BirthDate *time.Time `json:"birth_date,omitempty",validate:"lt"`
-	Status    *string    `json:"status,omitempty",validate:"max=255"`
+	FirstName *string    `json:"first_name"`
+	LastName  *string    `json:"last_name"`
+	BirthDate *time.Time `json:"birth_date"`
+	Status    *string    `json:"status"`
+}
+
+func (p Profile) Validate() error {
+	return validation.ValidateStruct(
+		&p,
+		validation.Field(&p.FirstName, validation.NilOrNotEmpty, validation.Max(80)),
+		validation.Field(&p.LastName, validation.NilOrNotEmpty, validation.Max(80)),
+		validation.Field(&p.BirthDate, validation.Max(time.Now())),
+		validation.Field(&p.Status, validation.Max(255)),
+	)
 }

@@ -3,8 +3,6 @@ package editing
 import (
 	"fmt"
 
-	validator "gopkg.in/go-playground/validator.v9"
-
 	"github.com/pkg/errors"
 )
 
@@ -29,9 +27,7 @@ func NewService(r Repository) Service {
 }
 
 func (s *service) EditProfile(userID int, p Profile) error {
-	validate := validator.New()
-
-	if err := validate.Struct(p); err != nil {
+	if err := p.Validate(); err != nil {
 		return errors.WithStack(err)
 	}
 

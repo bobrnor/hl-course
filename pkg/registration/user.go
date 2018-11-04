@@ -1,5 +1,5 @@
 package registration
 
 type User struct {
-	Token string
+	Token string `json:"token"`
 }
