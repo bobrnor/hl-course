@@ -3,17 +3,21 @@ package registration
 import (
 	"fmt"
 
+	"github.com/pkg/errors"
+
 	"github.com/docker/distribution/uuid"
 )
 
-var ErrAlreadyExists = fmt.Errorf("user already exists")
+var ErrUserAlreadyExists = fmt.Errorf("user already exists")
+var ErrProfileAlreadyExists = fmt.Errorf("profile already exists")
 
 type Service interface {
 	RegisterUser() (User, error)
 }
 
 type Repository interface {
-	Create(u User) error
+	Create(u User) (id int, err error)
+	CreateProfile(userID int) error
 }
 
 type service struct {
@@ -32,8 +36,16 @@ func (s *service) RegisterUser() (User, error) {
 		Token: token,
 	}
 
-	if err := s.repo.Create(user); err != nil {
+	id, err := s.repo.Create(user)
+	if err != nil {
 		return User{}, err
+	}
+
+	if err := s.repo.CreateProfile(id); err != nil {
+		if errors.Cause(err) != ErrProfileAlreadyExists {
+			// TODO: delete previously created user
+			return User{}, err
+		}
 	}
 
 	return user, nil
