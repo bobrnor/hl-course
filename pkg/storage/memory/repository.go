@@ -1,6 +1,7 @@
 package memory
 
 import (
+	"log"
 	"sync"
 	"time"
 
@@ -128,4 +129,14 @@ func (s *Storage) replaceProfile(p Profile) error {
 	s.profiles[p.ID-1] = p
 
 	return nil
+}
+
+func (s *Storage) StartLogger() {
+	go s.loggerLoop()
+}
+
+func (s *Storage) loggerLoop() {
+	for range time.Tick(10 * time.Second) {
+		log.Printf("User count/Profile count: %d / %d", len(s.users), len(s.profiles))
+	}
 }

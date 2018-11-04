@@ -22,6 +22,7 @@ func main() {
 
 func run() error {
 	storage := new(memory.Storage)
+	storage.StartLogger()
 
 	registrator := registration.NewService(storage)
 	editor := editing.NewService(storage)
