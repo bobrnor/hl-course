@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 var ErrProfileNotFound = fmt.Errorf("profile not found")
