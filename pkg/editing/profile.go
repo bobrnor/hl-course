@@ -16,9 +16,9 @@ type Profile struct {
 func (p Profile) Validate() error {
 	return validation.ValidateStruct(
 		&p,
-		validation.Field(&p.FirstName, validation.NilOrNotEmpty, validation.Max(80)),
-		validation.Field(&p.LastName, validation.NilOrNotEmpty, validation.Max(80)),
+		validation.Field(&p.FirstName, validation.NilOrNotEmpty, validation.Length(0, 80)),
+		validation.Field(&p.LastName, validation.NilOrNotEmpty, validation.Length(0, 80)),
 		validation.Field(&p.BirthDate, validation.Max(time.Now())),
-		validation.Field(&p.Status, validation.Max(255)),
+		validation.Field(&p.Status, validation.Length(0, 255)),
 	)
 }

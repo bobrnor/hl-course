@@ -9,5 +9,6 @@ require (
 	github.com/julienschmidt/httprouter v1.2.0
 	github.com/pkg/errors v0.8.0
 	golang.org/x/tools v0.0.0-20181102223251-96e9e165b75e // indirect
+	golang.org/x/vgo v0.0.0-20180912184537-9d567625acf4 // indirect
 	gopkg.in/go-playground/validator.v9 v9.23.0
 )
