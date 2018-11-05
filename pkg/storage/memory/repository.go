@@ -93,7 +93,7 @@ func (s *Storage) UpdateProfile(userID int, p editing.Profile) error {
 	}
 
 	if p.BirthDate != nil {
-		profile.BirthDate = *p.BirthDate
+		profile.BirthDate = time.Unix(*p.BirthDate, 0)
 	}
 
 	if p.Status != nil {
