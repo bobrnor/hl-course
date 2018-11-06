@@ -30,4 +30,3 @@ spec:
         ports:
           - name: rest
             containerPort: 8080
-

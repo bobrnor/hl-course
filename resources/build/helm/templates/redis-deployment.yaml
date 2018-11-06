@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hl-redis-deployment
+  labels:
+    app: hl-course
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: hl-redis
+  template:
+    metadata:
+      labels:
+        run: hl-redis
+    spec:
+      containers:
+      - name: redis
+        image: arm32v6/redis:alpine
+        imagePullPolicy: Always
+        args:
+        - redis-server
+        - "--maxmemory"
+        - 64mb
+        livenessProbe:
+          exec:
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "redis-cli set liveness-probe \"`date`\" | grep OK"
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        ports:
+        - name: redis-port
+          containerPort: 6379

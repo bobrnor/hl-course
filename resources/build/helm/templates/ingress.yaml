@@ -11,3 +11,10 @@ spec:
           serviceName: hl-course-server-service
           servicePort: 80
         path: /
+  - host: redis.hl-course.com
+    http:
+      paths:
+      - backend:
+          serviceName: hl-redis-service
+          servicePort: 6379
+        path: /

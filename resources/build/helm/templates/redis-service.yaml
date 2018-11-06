@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hl-redis-service
+spec:
+  selector:
+    run: hl-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: redis-port
