@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/sanity-io/litter"
+
 	"github.com/bobrnor/hl-course/pkg/authenticating"
 
 	"github.com/bobrnor/hl-course/pkg/editing"
@@ -43,6 +45,8 @@ func registerUser(s registration.Service) httprouter.Handle {
 			return
 		}
 
+		log.Println("registered:", litter.Sdump(u))
+
 		payload.Data = u
 		payload.Write(w, http.StatusOK)
 	}
@@ -78,6 +82,8 @@ func editProfile(s editing.Service) httprouter.Handle {
 			return
 		}
 
+		log.Println("edited:", userID, litter.Sdump(profile))
+
 		payload.Write(w, http.StatusOK)
 	}
 }
@@ -96,6 +102,8 @@ func authMiddleware(next httprouter.Handle, a authenticating.Service) httprouter
 			payload.Write(w, http.StatusInternalServerError)
 			return
 		}
+
+		log.Println("auth:", id, token)
 
 		ctx := context.WithValue(r.Context(), UserIDKey, id)
 		next(w, r.WithContext(ctx), p)
